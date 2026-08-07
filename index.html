@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMA & VERENT - Controllo di Gestione Pro</title>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding: 10px; font-size: 13px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        
+        header { text-align: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+        h1 { font-size: 20px; color: var(--primary); }
+        .subtitle { font-size: 11px; color: var(--text-muted); }
+
+        /* NAV TAB NAVIGATION */
+        .nav-tabs { display: flex; gap: 4px; margin-bottom: 12px; border-bottom: 2px solid var(--border); background: #e2e8f0; padding: 4px; border-radius: 8px; }
+        .tab-btn { flex: 1; padding: 8px 4px; border: none; background: transparent; font-size: 11px; font-weight: bold; color: var(--text-muted); border-radius: 6px; cursor: pointer; text-align: center; }
+        .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .card { background: var(--card); padding: 12px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 12px; border: 1px solid var(--border); }
+        h2 { font-size: 13px; color: var(--primary); text-transform: uppercase; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+
+        /* SELEZIONE PERIODO */
+        .period-bar { display: flex; gap: 8px; background: #eff6ff; padding: 8px; border-radius: 6px; border: 1px solid #bfdbfe; margin-bottom: 10px; align-items: center; justify-content: space-between; }
+        .period-bar label { font-weight: bold; font-size: 11px; color: var(--primary); }
+        .period-bar select { padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); font-weight: bold; background: white; font-size: 12px; }
+
+        /* TABELLA INPUT REATTIVA */
+        .grid-header { display: flex; font-weight: bold; font-size: 11px; text-transform: uppercase; color: var(--primary); margin-bottom: 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+        .row-grid { display: flex; align-items: center; margin-bottom: 6px; }
+        
+        .col-label { width: 34%; font-size: 11px; font-weight: 600; padding-right: 4px; }
+        .col-input { width: 22%; text-align: center; }
+        .col-tot-input { width: 22%; text-align: right; font-weight: bold; font-family: monospace; color: var(--primary); padding-right: 6px; font-size: 12px; }
+        
+        input { width: 95%; padding: 5px; border: 1px solid var(--border); border-radius: 4px; font-size: 13px; text-align: right; -webkit-appearance: none; }
+        input:focus { border-color: var(--primary-light); outline: none; background: #f0fdf4; }
+
+        /* TOGGLE BUTTON */
+        .btn-toggle { background: #cbd5e1; border: none; font-size: 10px; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-weight: bold; color: var(--text); }
+        .btn-toggle:hover { background: #94a3b8; color: white; }
+
+        /* CLASSI PER NASCONDERE SINGOLE */
+        .hide-singles .col-input, .hide-singles .col-singles-head { display: none !important; }
+        .hide-singles .col-label { width: 50% !important; }
+        .hide-singles .col-tot-input, .hide-singles .col-tot-head { width: 50% !important; text-align: right !important; }
+        .hide-singles .col-res-val { display: none !important; }
+        .hide-singles .col-res-label { width: 50% !important; }
+        .hide-singles .col-res-comb { width: 50% !important; text-align: right !important; }
+
+        /* RISULTATI */
+        .res-header { display: flex; font-weight: bold; font-size: 10px; color: #475569; border-bottom: 1px solid var(--border); padding-bottom: 4px; margin-bottom: 6px; }
+        .col-res-label { width: 34%; font-size: 11px; }
+        .col-res-val { width: 22%; text-align: right; font-family: monospace; font-size: 12px; font-weight: 600; }
+        .col-res-comb { width: 22%; text-align: right; font-family: monospace; font-size: 12px; font-weight: bold; color: var(--primary); }
+        
+        .row-res { display: flex; align-items: center; padding: 5px 0; border-bottom: 1px dashed #e2e8f0; }
+        .row-res.bold { font-weight: bold; background-color: #f1f5f9; border-bottom: 1px solid var(--border); }
+
+        .info-toggle { background: #e2e8f0; border: none; font-size: 9px; padding: 1px 3px; border-radius: 3px; cursor: pointer; }
+        .info-box { display: none; background: #f8fafc; border: 1px solid #cbd5e1; padding: 6px; border-radius: 4px; font-size: 10px; color: #475569; margin: 4px 0; width: 100%; }
+
+        /* TABELLE MULTI-ANNO E MENSILE */
+        .comp-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 11px; }
+        .comp-table th, .comp-table td { border: 1px solid var(--border); padding: 6px; text-align: right; }
+        .comp-table th { background: #f1f5f9; color: var(--primary); text-align: center; }
+        .comp-table td:first-child { text-align: left; font-weight: bold; }
+
+        .ai-box { background: #eff6ff; border: 1px dashed #3b82f6; border-radius: 6px; padding: 8px; margin-top: 5px; font-size: 11px; color: #1e3a8a; line-height: 1.4; }
+        .ai-title { font-weight: bold; margin-bottom: 2px; }
+
+        .btn-reset { display: block; width: 100%; padding: 8px; background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; margin-top: 10px; }
+        footer { font-size: 9px; color: var(--text-muted); text-align: center; margin-top: 15px; padding-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>DEMA & VERENT Pro</h1>
+        <p class="subtitle">Software di Controllo di Gestione e Consolidato di Gruppo</p>
+    </header>
+
+    <!-- SCHEDE / PAGINE -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-singolo')">📊 Analisi Periodo</button>
+        <button class="tab-btn" onclick="switchTab('tab-pluriennale')">📅 Trend Pluriennale</button>
+        <button class="tab-btn" onclick="switchTab('tab-mensile')">⏱️ Controllo Mensile</button>
+    </div>
+
+    <!-- ==================== TAB 1: ANALISI PERIODO ==================== -->
+    <div id="tab-singolo" class="tab-content active">
+        
+        <!-- BARRA SELEZIONE PERIODO -->
+        <div class="period-bar">
+            <div>
+                <label>Anno:</label>
+                <select id="sel_anno" onchange="cambiaPeriodo()">
+                    <option value="2026" selected>2026</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                </select>
+            </div>
+            <div>
+                <label>Periodo:</label>
+                <select id="sel_mese" onchange="cambiaPeriodo()">
+                    <option value="ANNUALE" selected>Anno Intero</option>
+                    <option value="Q1">1° Trimestre (Q1)</option>
+                    <option value="Q2">2° Trimestre (Q2)</option>
+                    <option value="Q3">3° Trimestre (Q3)</option>
+                    <option value="Q4">4° Trimestre (Q4)</option>
+                    <option value="M01">Gennaio</option>
+                    <option value="M02">Febbraio</option>
+                    <option value="M03">Marzo</option>
+                    <option value="M04">Aprile</option>
+                    <option value="M05">Maggio</option>
+                    <option value="M06">Giugno</option>
+                    <option value="M07">Luglio</option>
+                    <option value="M08">Agosto</option>
+                    <option value="M09">Settembre</option>
+                    <option value="M10">Ottobre</option>
+                    <option value="M11">Novembre</option>
+                    <option value="M12">Dicembre</option>
+                </select>
+            </div>
+            <button class="btn-toggle" onclick="toggleSingole()">👁️ Mostra/Nascondi Singole</button>
+        </div>
+
+        <!-- INPUT DATI CON TOTALE GRUPPO -->
+        <div class="card" id="cardInputs">
+            <h2>
+                <span>Dati Economico-Patrimoniali (€)</span>
+                <span id="periodoLabel" style="font-size: 10px; color: var(--primary-light);">2026 - ANNUALE</span>
+            </h2>
+            <div class="grid-header">
+                <div class="col-label">Voce</div>
+                <div class="col-input col-singles-head">DEMA</div>
+                <div class="col-input col-singles-head">VERENT</div>
+                <div class="col-tot-input col-tot-head">TOT GRUPPO</div>
+            </div>
+
+            <!-- CE -->
+            <div class="row-grid"><div class="col-label">Ricavi Vendite (A1)</div><div class="col-input"><input type="number" id="r_dema" placeholder="0"></div><div class="col-input"><input type="number" id="r_verent" placeholder="0"></div><div class="col-tot-input" id="tot_r">0 €</div></div>
+            <div class="row-grid"><div class="col-label">Costi Esterni (B6-B8)</div><div class="col-input"><input type="number" id="c_dema" placeholder="0"></div><div class="col-input"><input type="number" id="c_verent" placeholder="0"></div><div class="col-tot-input" id="tot_c">0 €</div></div>
+            <div class="row-grid"><div class="col-label">Costi Personale (B9)</div><div class="col-input"><input type="number" id="p_dema" placeholder="0"></div><div class="col-input"><input type="number" id="p_verent" placeholder="0"></div><div class="col-tot-input" id="tot_p">0 €</div></div>
+            <div class="row-grid"><div class="col-label">Ammortamenti (B10)</div><div class="col-input"><input type="number" id="a_dema" placeholder="0"></div><div class="col-input"><input type="number" id="a_verent" placeholder="0"></div><div class="col-tot-input" id="tot_a">0 €</div></div>
+            <div class="row-grid"><div class="col-label">Utile d'Esercizio (21)</div><div class="col-input"><input type="number" id="u_dema" placeholder="0"></div><div class="col-input"><input type="number" id="u_verent" placeholder="0"></div><div class="col-tot-input" id="tot_u">0 €</div></div>
+
+            <div style="margin: 8px 0; border-top: 1px solid #e2e8f0;"></div>
+
+            <!-- SP -->
+            <div class="row-grid"><div class="col-label">Attivo Immobilizzato (B)</div><div class="col-input"><input type="number" id="i_dema" placeholder="0"></div><div class="col-input"><input type="number" id="i_verent" placeholder="0"></div><div class="col-tot-input" id="tot_i">0 €</div></div>
+            <div class="row-grid"><div class="col-label">Attivo Circolante (C)</div><div class="col-input"><input type="number" id="cl_dema" placeholder="0"></div><div class="col-input"><input type="number" id="cl_verent" placeholder="0"></div><div class="col-tot-input" id="tot_cl">0 €</div></div>
+            <div class="row-grid"><div class="col-label">Patrimonio Netto (A)</div><div class="col-input"><input type="number" id="n_dema" placeholder="0"></div><div class="col-input"><input type="number" id="n_verent" placeholder="0"></div><div class="col-tot-input" id="tot_n">0 €</div></div>
+            <div class="row-grid"><div class="col-label">Passività Breve Termine</div><div class="col-input"><input type="number" id="pb_dema" placeholder="0"></div><div class="col-input"><input type="number" id="pb_verent" placeholder="0"></div><div class="col-tot-input" id="tot_pb">0 €</div></div>
+            <div class="row-grid"><div class="col-label">PFN (Debito Fin. - Cassa)</div><div class="col-input"><input type="number" id="pfn_dema" placeholder="0"></div><div class="col-input"><input type="number" id="pfn_verent" placeholder="0"></div><div class="col-tot-input" id="tot_pfn">0 €</div></div>
+        </div>
+
+        <!-- RISULTATI E INDICI -->
+        <div class="card" id="cardResults">
+            <h2>Margini e Indici Calcolati</h2>
+            <div class="res-header">
+                <div class="col-res-label">Metrica</div>
+                <div class="col-res-val col-singles-head">DEMA</div>
+                <div class="col-res-val col-singles-head">VERENT</div>
+                <div class="col-res-comb col-tot-head">GRUPPO</div>
+            </div>
+
+            <div class="row-res"><div class="col-res-label">Valore Aggiunto</div><div class="col-res-val" id="va_d">0</div><div class="col-res-val" id="va_v">0</div><div class="col-res-comb" id="va_g">0</div></div>
+            <div class="row-res bold"><div class="col-res-label">MOL (EBITDA)</div><div class="col-res-val" id="mol_d">0</div><div class="col-res-val" id="mol_v">0</div><div class="col-res-comb" id="mol_g">0</div></div>
+            <div class="row-res"><div class="col-res-label">EBIT (Reddito Op.)</div><div class="col-res-val" id="ebit_d">0</div><div class="col-res-val" id="ebit_v">0</div><div class="col-res-comb" id="ebit_g">0</div></div>
+            <div class="row-res"><div class="col-res-label">Cap. Investito Netto</div><div class="col-res-val" id="ci_d">0</div><div class="col-res-val" id="ci_v">0</div><div class="col-res-comb" id="ci_g">0</div></div>
+            
+            <div class="row-res">
+                <div class="col-res-label">ROI <button class="info-toggle" onclick="toggleInfo('f_roi')">?</button><div id="f_roi" class="info-box">(EBIT / Cap. Investito) * 100</div></div>
+                <div class="col-res-val" id="roi_d">0%</div><div class="col-res-val" id="roi_v">0%</div><div class="col-res-comb" id="roi_g">0%</div>
+            </div>
+            <div class="row-res">
+                <div class="col-res-label">ROE <button class="info-toggle" onclick="toggleInfo('f_roe')">?</button><div id="f_roe" class="info-box">(Utile / Patri. Netto) * 100</div></div>
+                <div class="col-res-val" id="roe_d">0%</div><div class="col-res-val" id="roe_v">0%</div><div class="col-res-comb" id="roe_g">0%</div>
+            </div>
+            <div class="row-res">
+                <div class="col-res-label">ROS <button class="info-toggle" onclick="toggleInfo('f_ros')">?</button><div id="f_ros" class="info-box">(EBIT / Ricavi) * 100</div></div>
+                <div class="col-res-val" id="ros_d">0%</div><div class="col-res-val" id="ros_v">0%</div><div class="col-res-comb" id="ros_g">0%</div>
+            </div>
+            <div class="row-res">
+                <div class="col-res-label">Indice Disponibilità <button class="info-toggle" onclick="toggleInfo('f_disp')">?</button><div id="f_disp" class="info-box">Attivo Circolante / Passività Breve</div></div>
+                <div class="col-res-val" id="disp_d">0.00</div><div class="col-res-val" id="disp_v">0.00</div><div class="col-res-comb" id="disp_g">0.00</div>
+            </div>
+            <div class="row-res">
+                <div class="col-res-label">PFN / MOL <button class="info-toggle" onclick="toggleInfo('f_pfn')">?</button><div id="f_pfn" class="info-box">PFN / MOL Combinato</div></div>
+                <div class="col-res-val" id="pfn_d">0.00</div><div class="col-res-val" id="pfn_v">0.00</div><div class="col-res-comb" id="pfn_g">0.00</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Diagnosi Automatica IA</h2>
+            <div class="ai-box" id="aiReport">Compila i dati del periodo selezionato per generare la diagnosi.</div>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 2: TREND PLURIENNALE ==================== -->
+    <div id="tab-pluriennale" class="tab-content">
+        <div class="card">
+            <h2>Confronto Storico Gruppo (2023 - 2026)</h2>
+            <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">I dati inseriti nella scheda principale per ciascun anno (periodo "Anno Intero") vengono aggregati qui automaticamente.</p>
+            <table class="comp-table">
+                <thead>
+                    <tr>
+                        <th>Voce Gruppo</th>
+                        <th>2023</th>
+                        <th>2024</th>
+                        <th>2025</th>
+                        <th>2026</th>
+                    </tr>
+                </thead>
+                <tbody id="histBody">
+                    <!-- Popolato via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ==================== TAB 3: CONTROLLO MENSILE ==================== -->
+    <div id="tab-mensile" class="tab-content">
+        <div class="card">
+            <h2>Avanzamento Mensile Gruppo (<span id="yrMensileLabel">2026</span>)</h2>
+            <p style="font-size: 10px; color: var(--text-muted); margin-bottom: 8px;">Riepilogo dei dati inseriti mese per mese nell'anno selezionato.</p>
+            <div style="overflow-x: auto;">
+                <table class="comp-table" style="min-width: 600px;">
+                    <thead>
+                        <tr>
+                            <th>Periodo</th>
+                            <th>Ricavi Tot.</th>
+                            <th>MOL Tot.</th>
+                            <th>EBIT Tot.</th>
+                            <th>PFN Tot.</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monthlyBody">
+                        <!-- Popolato via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-reset" onclick="resetTutto()">⚠️ Azzera Tutti i Dati in Memoria</button>
+
+    <footer>
+        DEMA & VERENT Pro • Sistema Integrato di Controllo Aziendale.<br>Tutti i dati risiedono esclusivamente nel browser locale.
+    </footer>
+</div>
+
+<script>
+    const fields = [
+        'r_dema','r_verent','c_dema','c_verent','p_dema','p_verent','a_dema','a_verent','u_dema','u_verent',
+        'i_dema','i_verent','cl_dema','cl_verent','n_dema','n_verent','pb_dema','pb_verent','pfn_dema','pfn_verent'
+    ];
+
+    let currentYear = "2026";
+    let currentPeriod = "ANNUALE";
+    let hideSinglesState = false;
+
+    function getStorageKey(yr, per, fId) {
+        return DATA_${yr}_${per}_${fId};
+    }
+
+    function formatK(val) {
+        if(Math.abs(val) >= 1000) {
+            return (val/1000).toFixed(0) + 'k €';
+        }
+        return val.toFixed(0) + ' €';
+    }
+
+    function toggleInfo(id) {
+        const b = document.getElementById(id);
+        b.style.display = (b.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function toggleSingles() {
+        hideSinglesState = !hideSinglesState;
+        const cardIn = document.getElementById('cardInputs');
+        const cardRes = document.getElementById('cardResults');
+        if(hideSinglesState) {
+            cardIn.classList.add('hide-singles');
+            cardRes.classList.add('hide-singles');
+        } else {
+            cardIn.classList.remove('hide-singles');
+            cardRes.classList.remove('hide-singles');
+        }
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        event.target.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+
+        if(t
