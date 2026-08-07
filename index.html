@@ -83,7 +83,6 @@
         .comp-table td:first-child { text-align: left; font-weight: bold; }
 
         .ai-box { background: #eff6ff; border: 1px dashed #3b82f6; border-radius: 6px; padding: 8px; margin-top: 5px; font-size: 11px; color: #1e3a8a; line-height: 1.4; }
-        .ai-title { font-weight: bold; margin-bottom: 2px; }
 
         .btn-reset { display: block; width: 100%; padding: 8px; background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; text-align: center; margin-top: 10px; }
         footer { font-size: 9px; color: var(--text-muted); text-align: center; margin-top: 15px; padding-bottom: 15px; }
@@ -97,17 +96,14 @@
         <p class="subtitle">Software di Controllo di Gestione e Consolidato di Gruppo</p>
     </header>
 
-    <!-- SCHEDE / PAGINE -->
     <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('tab-singolo')">📊 Analisi Periodo</button>
-        <button class="tab-btn" onclick="switchTab('tab-pluriennale')">📅 Trend Pluriennale</button>
-        <button class="tab-btn" onclick="switchTab('tab-mensile')">⏱️ Controllo Mensile</button>
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-singolo')">📊 Analisi Periodo</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-pluriennale')">📅 Trend Pluriennale</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-mensile')">⏱️ Controllo Mensile</button>
     </div>
 
-    <!-- ==================== TAB 1: ANALISI PERIODO ==================== -->
     <div id="tab-singolo" class="tab-content active">
         
-        <!-- BARRA SELEZIONE PERIODO -->
         <div class="period-bar">
             <div>
                 <label>Anno:</label>
@@ -143,7 +139,6 @@
             <button class="btn-toggle" onclick="toggleSingole()">👁️ Mostra/Nascondi Singole</button>
         </div>
 
-        <!-- INPUT DATI CON TOTALE GRUPPO -->
         <div class="card" id="cardInputs">
             <h2>
                 <span>Dati Economico-Patrimoniali (€)</span>
@@ -156,7 +151,6 @@
                 <div class="col-tot-input col-tot-head">TOT GRUPPO</div>
             </div>
 
-            <!-- CE -->
             <div class="row-grid"><div class="col-label">Ricavi Vendite (A1)</div><div class="col-input"><input type="number" id="r_dema" placeholder="0"></div><div class="col-input"><input type="number" id="r_verent" placeholder="0"></div><div class="col-tot-input" id="tot_r">0 €</div></div>
             <div class="row-grid"><div class="col-label">Costi Esterni (B6-B8)</div><div class="col-input"><input type="number" id="c_dema" placeholder="0"></div><div class="col-input"><input type="number" id="c_verent" placeholder="0"></div><div class="col-tot-input" id="tot_c">0 €</div></div>
             <div class="row-grid"><div class="col-label">Costi Personale (B9)</div><div class="col-input"><input type="number" id="p_dema" placeholder="0"></div><div class="col-input"><input type="number" id="p_verent" placeholder="0"></div><div class="col-tot-input" id="tot_p">0 €</div></div>
@@ -165,7 +159,6 @@
 
             <div style="margin: 8px 0; border-top: 1px solid #e2e8f0;"></div>
 
-            <!-- SP -->
             <div class="row-grid"><div class="col-label">Attivo Immobilizzato (B)</div><div class="col-input"><input type="number" id="i_dema" placeholder="0"></div><div class="col-input"><input type="number" id="i_verent" placeholder="0"></div><div class="col-tot-input" id="tot_i">0 €</div></div>
             <div class="row-grid"><div class="col-label">Attivo Circolante (C)</div><div class="col-input"><input type="number" id="cl_dema" placeholder="0"></div><div class="col-input"><input type="number" id="cl_verent" placeholder="0"></div><div class="col-tot-input" id="tot_cl">0 €</div></div>
             <div class="row-grid"><div class="col-label">Patrimonio Netto (A)</div><div class="col-input"><input type="number" id="n_dema" placeholder="0"></div><div class="col-input"><input type="number" id="n_verent" placeholder="0"></div><div class="col-tot-input" id="tot_n">0 €</div></div>
@@ -173,7 +166,6 @@
             <div class="row-grid"><div class="col-label">PFN (Debito Fin. - Cassa)</div><div class="col-input"><input type="number" id="pfn_dema" placeholder="0"></div><div class="col-input"><input type="number" id="pfn_verent" placeholder="0"></div><div class="col-tot-input" id="tot_pfn">0 €</div></div>
         </div>
 
-        <!-- RISULTATI E INDICI -->
         <div class="card" id="cardResults">
             <h2>Margini e Indici Calcolati</h2>
             <div class="res-header">
@@ -216,7 +208,6 @@
         </div>
     </div>
 
-    <!-- ==================== TAB 2: TREND PLURIENNALE ==================== -->
     <div id="tab-pluriennale" class="tab-content">
         <div class="card">
             <h2>Confronto Storico Gruppo (2023 - 2026)</h2>
@@ -232,13 +223,11 @@
                     </tr>
                 </thead>
                 <tbody id="histBody">
-                    <!-- Popolato via JS -->
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </div>
 
-    <!-- ==================== TAB 3: CONTROLLO MENSILE ==================== -->
     <div id="tab-mensile" class="tab-content">
         <div class="card">
             <h2>Avanzamento Mensile Gruppo (<span id="yrMensileLabel">2026</span>)</h2>
@@ -255,8 +244,7 @@
                         </tr>
                     </thead>
                     <tbody id="monthlyBody">
-                        <!-- Popolato via JS -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
@@ -280,7 +268,7 @@
     let hideSinglesState = false;
 
     function getStorageKey(yr, per, fId) {
-        return DATA_${yr}_${per}_${fId};
+        return `DATA_${yr}_${per}_${fId}`;
     }
 
     function formatK(val) {
@@ -308,11 +296,263 @@
         }
     }
 
-    function switchTab(tabId) {
+    function switchTab(evt, tabId) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         
-        event.target.classList.add('active');
+        evt.currentTarget.classList.add('active');
         document.getElementById(tabId).classList.add('active');
 
-        if(t
+        if(tabId === 'tab-pluriennale') aggiornaPluriennale();
+        if(tabId === 'tab-mensile') aggiornaMensile();
+    }
+
+    function v(id) {
+        return parseFloat(document.getElementById(id).value) || 0;
+    }
+
+    function salvaEDiag() {
+        // Salva dati nel LocalStorage
+        fields.forEach(f => {
+            const val = document.getElementById(f).value;
+            localStorage.setItem(getStorageKey(currentYear, currentPeriod, f), val);
+        });
+
+        // Totali
+        const tot_r = v('r_dema') + v('r_verent');
+        const tot_c = v('c_dema') + v('c_verent');
+        const tot_p = v('p_dema') + v('p_verent');
+        const tot_a = v('a_dema') + v('a_verent');
+        const tot_u = v('u_dema') + v('u_verent');
+
+        const tot_i = v('i_dema') + v('i_verent');
+        const tot_cl = v('cl_dema') + v('cl_verent');
+        const tot_n = v('n_dema') + v('n_verent');
+        const tot_pb = v('pb_dema') + v('pb_verent');
+        const tot_pfn = v('pfn_dema') + v('pfn_verent');
+
+        document.getElementById('tot_r').innerText = formatK(tot_r);
+        document.getElementById('tot_c').innerText = formatK(tot_c);
+        document.getElementById('tot_p').innerText = formatK(tot_p);
+        document.getElementById('tot_a').innerText = formatK(tot_a);
+        document.getElementById('tot_u').innerText = formatK(tot_u);
+
+        document.getElementById('tot_i').innerText = formatK(tot_i);
+        document.getElementById('tot_cl').innerText = formatK(tot_cl);
+        document.getElementById('tot_n').innerText = formatK(tot_n);
+        document.getElementById('tot_pb').innerText = formatK(tot_pb);
+        document.getElementById('tot_pfn').innerText = formatK(tot_pfn);
+
+        // Calcoli DEMA
+        const va_d = v('r_dema') - v('c_dema');
+        const mol_d = va_d - v('p_dema');
+        const ebit_d = mol_d - v('a_dema');
+        const ci_d = v('i_dema') + v('cl_dema');
+
+        // Calcoli VERENT
+        const va_v = v('r_verent') - v('c_verent');
+        const mol_v = va_v - v('p_verent');
+        const ebit_v = mol_v - v('a_verent');
+        const ci_v = v('i_verent') + v('cl_verent');
+
+        // Calcoli GRUPPO
+        const va_g = va_d + va_v;
+        const mol_g = mol_d + mol_v;
+        const ebit_g = ebit_d + ebit_v;
+        const ci_g = ci_d + ci_v;
+
+        // Render Valori
+        document.getElementById('va_d').innerText = formatK(va_d);
+        document.getElementById('va_v').innerText = formatK(va_v);
+        document.getElementById('va_g').innerText = formatK(va_g);
+
+        document.getElementById('mol_d').innerText = formatK(mol_d);
+        document.getElementById('mol_v').innerText = formatK(mol_v);
+        document.getElementById('mol_g').innerText = formatK(mol_g);
+
+        document.getElementById('ebit_d').innerText = formatK(ebit_d);
+        document.getElementById('ebit_v').innerText = formatK(ebit_v);
+        document.getElementById('ebit_g').innerText = formatK(ebit_g);
+
+        document.getElementById('ci_d').innerText = formatK(ci_d);
+        document.getElementById('ci_v').innerText = formatK(ci_v);
+        document.getElementById('ci_g').innerText = formatK(ci_g);
+
+        // Indici DEMA
+        document.getElementById('roi_d').innerText = ci_d ? (ebit_d / ci_d * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('roe_d').innerText = v('n_dema') ? (v('u_dema') / v('n_dema') * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('ros_d').innerText = v('r_dema') ? (ebit_d / v('r_dema') * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('disp_d').innerText = v('pb_dema') ? (v('cl_dema') / v('pb_dema')).toFixed(2) : '0.00';
+        document.getElementById('pfn_d').innerText = mol_d ? (v('pfn_dema') / mol_d).toFixed(2) : '0.00';
+
+        // Indici VERENT
+        document.getElementById('roi_v').innerText = ci_v ? (ebit_v / ci_v * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('roe_v').innerText = v('n_verent') ? (v('u_verent') / v('n_verent') * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('ros_v').innerText = v('r_verent') ? (ebit_v / v('r_verent') * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('disp_v').innerText = v('pb_verent') ? (v('cl_verent') / v('pb_verent')).toFixed(2) : '0.00';
+        document.getElementById('pfn_v').innerText = mol_v ? (v('pfn_verent') / mol_v).toFixed(2) : '0.00';
+
+        // Indici GRUPPO
+        document.getElementById('roi_g').innerText = ci_g ? (ebit_g / ci_g * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('roe_g').innerText = tot_n ? (tot_u / tot_n * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('ros_g').innerText = tot_r ? (ebit_g / tot_r * 100).toFixed(1) + '%' : '0%';
+        document.getElementById('disp_g').innerText = tot_pb ? (tot_cl / tot_pb).toFixed(2) : '0.00';
+        document.getElementById('pfn_g').innerText = mol_g ? (tot_pfn / mol_g).toFixed(2) : '0.00';
+
+        // Diagnosi IA
+        generaDiagnosi(tot_r, mol_g, ebit_g, tot_pfn, tot_n);
+    }
+
+    function generaDiagnosi(ricavi, mol, ebit, pfn, patrimonio) {
+        const box = document.getElementById('aiReport');
+        if(!ricavi) {
+            box.innerHTML = "Compila i dati del periodo selezionato per generare la diagnosi.";
+            return;
+        }
+
+        let marginMol = (mol / ricavi) * 100;
+        let pfnMol = mol > 0 ? (pfn / mol) : 0;
+
+        let html = `<div class="ai-title">📌 Report sintetico performance (${currentYear} - ${currentPeriod})</div>`;
+        html += `• <b>Margine Operativo Lordo (EBITDA):</b> ${marginMol.toFixed(1)}% sui ricavi.<br>`;
+        
+        if(marginMol > 15) {
+            html += `🟢 Eccellente reddittività operativa complessiva del Gruppo.<br>`;
+        } else if(marginMol > 5) {
+            html += `🟡 Reddittività media. Monitorare la gestione dei costi operativi.<br>`;
+        } else {
+            html += `🔴 Margine ridotto. Rischio di pressione sui flussi di cassa.<br>`;
+        }
+
+        if(pfn > 0) {
+            html += `• <b>Rapporto PFN/MOL:</b> ${pfnMol.toFixed(2)}x. `;
+            if(pfnMol < 3) html += `🟢 Struttura finanziaria sostenibile.`;
+            else html += `⚠️ Livello d'indebitamento da tenere sotto controllo.`;
+        } else {
+            html += `• <b>Posizione Finanziaria:</b> 🟢 Liquidità netta disponibile (PFN negativa o nulla).`;
+        }
+
+        box.innerHTML = html;
+    }
+
+    function cambiaPeriodo() {
+        currentYear = document.getElementById('sel_anno').value;
+        currentPeriod = document.getElementById('sel_mese').value;
+        
+        document.getElementById('periodoLabel').innerText = `${currentYear} - ${currentPeriod}`;
+        document.getElementById('yrMensileLabel').innerText = currentYear;
+
+        // Carica dati dal LocalStorage
+        fields.forEach(f => {
+            const val = localStorage.getItem(getStorageKey(currentYear, currentPeriod, f)) || '';
+            document.getElementById(f).value = val;
+        });
+
+        salvaEDiag();
+    }
+
+    function aggiornaPluriennale() {
+        const anni = ['2023', '2024', '2025', '2026'];
+        const tbody = document.getElementById('histBody');
+        tbody.innerHTML = '';
+
+        const voci = [
+            { id: 'r', label: 'Ricavi Totali' },
+            { id: 'mol', label: 'MOL (EBITDA)' },
+            { id: 'ebit', label: 'EBIT (Reddito Op.)' },
+            { id: 'pfn', label: 'PFN Totale' }
+        ];
+
+        voci.forEach(vItem => {
+            let tr = document.createElement('tr');
+            let tdLabel = document.createElement('td');
+            tdLabel.innerText = vItem.label;
+            tr.appendChild(tdLabel);
+
+            anni.forEach(yr => {
+                let r_d = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'r_dema'))) || 0;
+                let r_v = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'r_verent'))) || 0;
+                let c_d = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'c_dema'))) || 0;
+                let c_v = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'c_verent'))) || 0;
+                let p_d = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'p_dema'))) || 0;
+                let p_v = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'p_verent'))) || 0;
+                let a_d = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'a_dema'))) || 0;
+                let a_v = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'a_verent'))) || 0;
+                let pfn_d = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'pfn_dema'))) || 0;
+                let pfn_v = parseFloat(localStorage.getItem(getStorageKey(yr, 'ANNUALE', 'pfn_verent'))) || 0;
+
+                let val = 0;
+                if(vItem.id === 'r') val = r_d + r_v;
+                if(vItem.id === 'mol') val = (r_d - c_d - p_d) + (r_v - c_v - p_v);
+                if(vItem.id === 'ebit') val = (r_d - c_d - p_d - a_d) + (r_v - c_v - p_v - a_v);
+                if(vItem.id === 'pfn') val = pfn_d + pfn_v;
+
+                let td = document.createElement('td');
+                td.innerText = formatK(val);
+                tr.appendChild(td);
+            });
+
+            tbody.appendChild(tr);
+        });
+    }
+
+    function aggiornaMensile() {
+        const mesi = [
+            'M01','M02','M03','M04','M05','M06',
+            'M07','M08','M09','M10','M11','M12'
+        ];
+        const nomiMesi = [
+            'Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+            'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'
+        ];
+
+        const tbody = document.getElementById('monthlyBody');
+        tbody.innerHTML = '';
+
+        mesi.forEach((m, idx) => {
+            let r_d = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'r_dema'))) || 0;
+            let r_v = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'r_verent'))) || 0;
+            let c_d = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'c_dema'))) || 0;
+            let c_v = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'c_verent'))) || 0;
+            let p_d = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'p_dema'))) || 0;
+            let p_v = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'p_verent'))) || 0;
+            let a_d = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'a_dema'))) || 0;
+            let a_v = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'a_verent'))) || 0;
+            let pfn_d = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'pfn_dema'))) || 0;
+            let pfn_v = parseFloat(localStorage.getItem(getStorageKey(currentYear, m, 'pfn_verent'))) || 0;
+
+            let ricavi = r_d + r_v;
+            let mol = (r_d - c_d - p_d) + (r_v - c_v - p_v);
+            let ebit = mol - (a_d + a_v);
+            let pfn = pfn_d + pfn_v;
+
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="text-align:left;">${nomiMesi[idx]}</td>
+                <td>${formatK(ricavi)}</td>
+                <td>${formatK(mol)}</td>
+                <td>${formatK(ebit)}</td>
+                <td>${formatK(pfn)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function resetTutto() {
+        if(confirm("Sei sicuro di voler cancellare TUTTI i dati salvati per tutti gli anni e periodi?")) {
+            localStorage.clear();
+            cambiaPeriodo();
+        }
+    }
+
+    // Inizializzazione degli eventi sugli input
+    fields.forEach(f => {
+        document.getElementById(f).addEventListener('input', salvaEDiag);
+    });
+
+    // Avvio iniziale
+    cambiaPeriodo();
+</script>
+
+</body>
+</html>
